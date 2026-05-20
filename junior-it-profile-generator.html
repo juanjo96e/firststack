@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FirstStack — Tu perfil IT desde cero</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c0f;
+  --surface: #13151a;
+  --surface2: #1c1f27;
+  --border: #ffffff0f;
+  --border2: #ffffff1a;
+  --accent: #00e5a0;
+  --accent2: #0070f3;
+  --accent3: #ff6b35;
+  --text: #f0f2f5;
+  --muted: #6b7280;
+  --muted2: #9ca3af;
+  --danger: #ff4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* GRID NOISE BACKGROUND */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -40%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* HEADER */
+header {
+  padding: 48px 0 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h1 span { color: var(--accent); }
+
+.tagline {
+  font-size: 16px;
+  color: var(--muted2);
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+/* STEP INDICATOR */
+.steps-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.step-item {
+  flex: 1;
+  padding: 14px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  transition: all 0.3s;
+  cursor: default;
+}
+.step-item:last-child { border-right: none; }
+.step-item.active { color: var(--accent); background: rgba(0,229,160,0.05); }
+.step-item.done { color: var(--muted2); }
+
+.step-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.step-item.active .step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 500;
+}
+.step-item.done .step-num {
+  background: var(--surface2);
+  border-color: var(--border2);
+}
+.step-label { font-weight: 500; display: none; }
+@media(min-width: 520px) { .step-label { display: block; } }
+
+/* FORM SECTIONS */
+.section {
+  display: none;
+  animation: fadeUp 0.35s ease;
+}
+.section.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 14px;
+  color: var(--muted2);
+  margin-bottom: 28px;
+}
+
+.field-group { margin-bottom: 20px; }
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 7px;
+}
+
+input[type=text], input[type=email], textarea, select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input[type=text]:focus, input[type=email]:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,229,160,0.1);
+}
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+select { cursor: pointer; }
+select option { background: var(--surface2); }
+
+.input-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* TECH CHIPS */
+.chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.chip {
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border2);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+  font-family: 'DM Mono', monospace;
+  color: var(--muted2);
+  background: var(--surface);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.selected {
+  background: rgba(0,229,160,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* PROJECT CARDS */
+.project-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+}
+
+.project-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.project-idx {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(0,229,160,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.btn-remove {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.btn-remove:hover { color: var(--danger); background: rgba(255,68,68,0.08); }
+
+.project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width: 520px) { .project-grid { grid-template-columns: 1fr; } }
+.project-grid .full { grid-column: 1/-1; }
+
+/* BUTTONS */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 24px;
+  background: transparent;
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--muted2); color: var(--text); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--surface2);
+  color: var(--muted2);
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  justify-content: center;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,229,160,0.05); }
+
+.nav-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  align-items: center;
+}
+
+/* LOADING */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11,12,15,0.92);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.loading-overlay.show { display: flex; }
+
+.spinner {
+  width: 44px; height: 44px;
+  border: 2px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--muted2);
+}
+.loading-step {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+/* RESULTS */
+.results-grid { display: flex; flex-direction: column; gap: 20px; }
+
+.result-block {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.result-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.result-platform {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+.platform-linkedin { background: rgba(0,112,243,0.15); color: #60a5fa; border: 1px solid rgba(0,112,243,0.2); }
+.platform-carta { background: rgba(255,107,53,0.12); color: #fb923c; border: 1px solid rgba(255,107,53,0.2); }
+.platform-proyecto { background: rgba(0,229,160,0.1); color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
+
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--muted2);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Mono', monospace;
+}
+.btn-copy:hover { border-color: var(--accent); color: var(--accent); }
+.btn-copy.copied { border-color: var(--accent); color: var(--accent); background: rgba(0,229,160,0.08); }
+
+.result-content {
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted2);
+  white-space: pre-wrap;
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+.result-content strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.char-count {
+  padding: 8px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* ERROR */
+.error-box {
+  background: rgba(255,68,68,0.08);
+  border: 1px solid rgba(255,68,68,0.2);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 14px;
+  color: #fca5a5;
+  margin-top: 12px;
+  display: none;
+}
+.error-box.show { display: block; }
+
+/* RESTART */
+.restart-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* FOOTER TAG */
+.made-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.made-tag::before { content: '//'; color: var(--accent); }
+
+/* TOOLTIP */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--muted2);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tooltip-wrap:hover .tooltip { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Generando tu perfil...</div>
+  <div class="loading-step" id="loadingStep">analizando tus datos</div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="logo"><div class="logo-dot"></div>FirstStack</div>
+    <h1>Tu primer perfil IT,<br><span>sin experiencia previa.</span></h1>
+    <p class="tagline">Cuéntanos qué has aprendido y qué has construido. Nosotros lo convertimos en un perfil profesional que abre puertas.</p>
+  </header>
+
+  <div class="steps-bar">
+    <div class="step-item active" id="step-ind-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Sobre ti</div>
+    </div>
+    <div class="step-item" id="step-ind-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Tecnologías</div>
+    </div>
+    <div class="step-item" id="step-ind-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Proyectos</div>
+    </div>
+    <div class="step-item" id="step-ind-4">
+      <div class="step-num">4</div>
+      <div class="step-label">Tu perfil</div>
+    </div>
+  </div>
+
+  <!-- STEP 1: DATOS PERSONALES -->
+  <div class="section active" id="section-1">
+    <div class="section-title">Cuéntanos quién eres</div>
+    <p class="section-sub">Información básica para personalizar tu perfil. Sin rollos.</p>
+
+    <div class="field-group">
+      <label>Nombre completo</label>
+      <input type="text" id="nombre" placeholder="Ej: Laura García Martínez" />
+    </div>
+
+    <div class="field-group">
+      <label>Formación</label>
+      <select id="formacion">
+        <option value="">Selecciona tu formación...</option>
+        <option value="FP Medio - Sistemas Microinformáticos">FP Medio — Sistemas Microinformáticos</option>
+        <option value="FP Superior - ASIR">FP Superior — ASIR (Administración de Sistemas)</option>
+        <option value="FP Superior - DAM">FP Superior — DAM (Desarrollo de Aplicaciones Multiplataforma)</option>
+        <option value="FP Superior - DAW">FP Superior — DAW (Desarrollo de Aplicaciones Web)</option>
+        <option value="FP Superior - SMIX">FP Superior — SMX (Sistemas Microinformáticos y Redes)</option>
+        <option value="Grado en Ingeniería Informática">Grado — Ingeniería Informática</option>
+        <option value="Grado en Ingeniería de Software">Grado — Ingeniería de Software</option>
+        <option value="Grado en Ingeniería de Telecomunicaciones">Grado — Telecomunicaciones</option>
+        <option value="Bootcamp de Desarrollo Web">Bootcamp — Desarrollo Web</option>
+        <option value="Bootcamp de Ciberseguridad">Bootcamp — Ciberseguridad</option>
+        <option value="Bootcamp de Data Science">Bootcamp — Data Science / IA</option>
+        <option value="Autodidacta con certificaciones">Autodidacta con certificaciones</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>¿A qué rol quieres optar?</label>
+      <select id="rol">
+        <option value="">Selecciona el rol objetivo...</option>
+        <option value="Desarrollador Frontend Junior">Desarrollador Frontend Junior</option>
+        <option value="Desarrollador Backend Junior">Desarrollador Backend Junior</option>
+        <option value="Desarrollador Full Stack Junior">Desarrollador Full Stack Junior</option>
+        <option value="Administrador de Sistemas Junior">Administrador de Sistemas Junior (SysAdmin)</option>
+        <option value="Cloud / DevOps Junior">Cloud / DevOps Junior</option>
+        <option value="Técnico de Redes Junior">Técnico de Redes Junior</option>
+        <option value="Analista de Ciberseguridad Junior">Analista de Ciberseguridad Junior</option>
+        <option value="Data Analyst Junior">Data Analyst Junior</option>
+        <option value="QA / Tester Junior">QA / Tester Junior</option>
+        <option value="Soporte IT / Helpdesk">Soporte IT / Helpdesk</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>Una frase sobre ti <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(opcional — tu propia voz)</span></label>
+      <textarea id="frase" placeholder="Ej: Me apasiona el cloud y automatizar cosas. Busco mi primer proyecto real donde aportar y aprender rápido." rows="3"></textarea>
+      <p class="input-hint">// No tiene que ser perfecta. Cuanto más real, mejor resultado.</p>
+    </div>
+
+    <div id="error1" class="error-box">Rellena al menos tu nombre, formación y rol objetivo para continuar.</div>
+
+    <div class="nav-row">
+      <button class="btn-primary" onclick="goStep(2)">Siguiente — Tecnologías →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: TECNOLOGÍAS -->
+  <div class="section" id="section-2">
+    <div class="section-title">¿Qué tecnologías manejas?</div>
+    <p class="section-sub">Selecciona todo lo que hayas tocado, aunque sea de forma básica.</p>
+
+    <div class="field-group">
+      <label>Lenguajes de programación</label>
+      <div class="chips-wrap" id="chips-lang">
+        <div class="chip" onclick="toggleChip(this)">Python</div>
+        <div class="chip" onclick="toggleChip(this)">JavaScript</div>
+        <div class="chip" onclick="toggleChip(this)">TypeScript</div>
+        <div class="chip" onclick="toggleChip(this)">Java</div>
+        <div class="chip" onclick="toggleChip(this)">C#</div>
+        <div class="chip" onclick="toggleChip(this)">PHP</div>
+        <div class="chip" onclick="toggleChip(this)">C / C++</div>
+        <div class="chip" onclick="toggleChip(this)">Kotlin</div>
+        <div class="chip" onclick="toggleChip(this)">Swift</div>
+        <div class="chip" onclick="toggleChip(this)">Bash / Shell</div>
+        <div class="chip" onclick="toggleChip(this)">SQL</div>
+        <div class="chip" onclick="toggleChip(this)">PowerShell</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Frameworks y librerías</label>
+      <div class="chips-wrap" id="chips-fw">
+        <div class="chip" onclick="toggleChip(this)">React</div>
+        <div class="chip" onclick="toggleChip(this)">Vue.js</div>
+        <div class="chip" onclick="toggleChip(this)">Angular</div>
+        <div class="chip" onclick="toggleChip(this)">Node.js</div>
+        <div class="chip" onclick="toggleChip(this)">Express</div>
+        <div class="chip" onclick="toggleChip(this)">Django</div>
+        <div class="chip" onclick="toggleChip(this)">Flask</div>
+        <div class="chip" onclick="toggleChip(this)">Spring Boot</div>
+        <div class="chip" onclick="toggleChip(this)">.NET / ASP.NET</div>
+        <div class="chip" onclick="toggleChip(this)">Laravel</div>
+        <div class="chip" onclick="toggleChip(this)">Next.js</div>
+        <div class="chip" onclick="toggleChip(this)">FastAPI</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Cloud, infraestructura y devops</label>
+      <div class="chips-wrap" id="chips-cloud">
+        <div class="chip" onclick="toggleChip(this)">Azure</div>
+        <div class="chip" onclick="toggleChip(this)">AWS</div>
+        <div class="chip" onclick="toggleChip(this)">Google Cloud</div>
+        <div class="chip" onclick="toggleChip(this)">Docker</div>
+        <div class="chip" onclick="toggleChip(this)">Kubernetes</div>
+        <div class="chip" onclick="toggleChip(this)">Terraform</div>
+        <div class="chip" onclick="toggleChip(this)">CI/CD (GitHub Actions)</div>
+        <div class="chip" onclick="toggleChip(this)">Linux</div>
+        <div class="chip" onclick="toggleChip(this)">Windows Server</div>
+        <div class="chip" onclick="toggleChip(this)">Active Directory</div>
+        <div class="chip" onclick="toggleChip(this)">Ansible</div>
+        <div class="chip" onclick="toggleChip(this)">Git / GitHub</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Bases de datos</label>
+      <div class="chips-wrap" id="chips-db">
+        <div class="chip" onclick="toggleChip(this)">MySQL / MariaDB</div>
+        <div class="chip" onclick="toggleChip(this)">PostgreSQL</div>
+        <div class="chip" onclick="toggleChip(this)">MongoDB</div>
+        <div class="chip" onclick="toggleChip(this)">SQL Server</div>
+        <div class="chip" onclick="toggleChip(this)">SQLite</div>
+        <div class="chip" onclick="toggleChip(this)">Redis</div>
+        <div class="chip" onclick="toggleChip(this)">Firebase</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Certificaciones obtenidas <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(si tienes alguna)</span></label>
+      <input type="text" id="certs" placeholder="Ej: AZ-900, AWS Cloud Practitioner, CCNA, CompTIA A+..." />
+    </div>
+
+    <div id="error2" class="error-box">Selecciona al menos una tecnología para continuar.</div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goStep(1)">← Atrás</button>
+      <button class="btn-primary" onclick="goStep(3)">Siguiente — Proyectos →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: PROYECTOS -->
+  <div class="section" id="section-3">
+    <div class="section-title">Tus proyectos</div>
+    <p class="section-sub">Aunque sean del FP o la universidad — cada proyecto cuenta. Añade entre 1 y 4.</p>
+
+    <div class="project-list" id="projectList"></div>
+    <button class="btn-ghost" onclick="addProject()" id="btnAddProject">+ Añadir proyecto</button>
+
+    <div id="error3" class="error-box">Añade al menos un proyecto para continuar.</div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goStep(2)">← Atrás</button>
+      <button class="btn-primary" onclick="generate()">✦ Generar mi perfil</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: RESULTADOS -->
+  <div class="section" id="section-4">
+    <div class="section-title">Tu perfil está listo</div>
+    <p class="section-sub">Copia cada sección directamente donde la necesites. Puedes editarla a tu gusto.</p>
+
+    <div class="results-grid" id="resultsGrid"></div>
+
+    <div class="restart-row">
+      <button class="btn-secondary" onclick="restart()">← Empezar de nuevo</button>
+      <button class="btn-primary" onclick="copyAll()">Copiar todo</button>
+    </div>
+
+    <div class="made-tag">FirstStack — hecho para los que empiezan</div>
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+let projectCount = 0;
+
+function goStep(n) {
+  if (n === 2) {
+    const nombre = document.getElementById('nombre').value.trim();
+    const formacion = document.getElementById('formacion').value;
+    const rol = document.getElementById('rol').value;
+    const err = document.getElementById('error1');
+    if (!nombre || !formacion || !rol) { err.classList.add('show'); return; }
+    err.classList.remove('show');
+  }
+  if (n === 3) {
+    const selected = document.querySelectorAll('.chip.selected');
+    const err = document.getElementById('error2');
+    if (selected.length === 0) { err.classList.add('show'); return; }
+    err.classList.remove('show');
+  }
+
+  document.getElementById(`section-${currentStep}`).classList.remove('active');
+  document.getElementById(`step-ind-${currentStep}`).classList.remove('active');
+  document.getElementById(`step-ind-${currentStep}`).classList.add('done');
+
+  currentStep = n;
+  document.getElementById(`section-${n}`).classList.add('active');
+  document.getElementById(`step-ind-${n}`).classList.remove('done');
+  document.getElementById(`step-ind-${n}`).classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleChip(el) { el.classList.toggle('selected'); }
+
+function getSelectedChips() {
+  return Array.from(document.querySelectorAll('.chip.selected')).map(c => c.textContent.trim());
+}
+
+let projectIdx = 0;
+function addProject() {
+  if (projectCount >= 4) return;
+  projectCount++;
+  projectIdx++;
+  const idx = projectIdx;
+  const list = document.getElementById('projectList');
+  const card = document.createElement('div');
+  card.className = 'project-card';
+  card.id = `proj-${idx}`;
+  card.innerHTML = `
+    <div class="project-card-header">
+      <span class="project-idx">PROYECTO ${projectCount}</span>
+      <button class="btn-remove" onclick="removeProject(${idx})" title="Eliminar">×</button>
+    </div>
+    <div class="project-grid">
+      <div class="field-group">
+        <label>Nombre del proyecto</label>
+        <input type="text" id="proj-name-${idx}" placeholder="Ej: App de gestión de inventario" />
+      </div>
+      <div class="field-group">
+        <label>Tecnologías usadas</label>
+        <input type="text" id="proj-tech-${idx}" placeholder="Ej: Python, Flask, MySQL" />
+      </div>
+      <div class="field-group full">
+        <label>¿Qué hace y qué aprendiste?</label>
+        <textarea id="proj-desc-${idx}" placeholder="Ej: Sistema web para gestionar el stock de una tienda. Aprendí a diseñar una API REST y a conectarla con base de datos." rows="3"></textarea>
+      </div>
+      <div class="field-group">
+        <label>Enlace (GitHub, etc.) <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">opcional</span></label>
+        <input type="text" id="proj-url-${idx}" placeholder="https://github.com/..." />
+      </div>
+      <div class="field-group">
+        <label>Contexto</label>
+        <select id="proj-ctx-${idx}">
+          <option value="proyecto de FP">Proyecto de FP</option>
+          <option value="proyecto universitario">Proyecto universitario</option>
+          <option value="proyecto personal">Proyecto personal</option>
+          <option value="proyecto de bootcamp">Proyecto de bootcamp</option>
+          <option value="proyecto colaborativo">Proyecto colaborativo / equipo</option>
+        </select>
+      </div>
+    </div>
+  `;
+  list.appendChild(card);
+  if (projectCount >= 4) document.getElementById('btnAddProject').style.display = 'none';
+}
+
+function removeProject(idx) {
+  const card = document.getElementById(`proj-${idx}`);
+  if (card) { card.remove(); projectCount--; }
+  document.getElementById('btnAddProject').style.display = '';
+  document.querySelectorAll('.project-card').forEach((c, i) => {
+    c.querySelector('.project-idx').textContent = `PROYECTO ${i + 1}`;
+  });
+}
+
+function getProjects() {
+  const projects = [];
+  document.querySelectorAll('.project-card').forEach(card => {
+    const id = card.id.replace('proj-', '');
+    const name = document.getElementById(`proj-name-${id}`)?.value.trim();
+    const tech = document.getElementById(`proj-tech-${id}`)?.value.trim();
+    const desc = document.getElementById(`proj-desc-${id}`)?.value.trim();
+    const url = document.getElementById(`proj-url-${id}`)?.value.trim();
+    const ctx = document.getElementById(`proj-ctx-${id}`)?.value;
+    if (name || desc) projects.push({ name, tech, desc, url, ctx });
+  });
+  return projects;
+}
+
+const LOADING_STEPS = [
+  'analizando tu perfil...',
+  'optimizando keywords de LinkedIn...',
+  'redactando tu sección "Sobre mí"...',
+  'transformando proyectos en experiencia real...',
+  'generando carta de presentación...',
+  'añadiendo los últimos retoques...'
+];
+
+let loadInterval;
+function startLoadingAnim() {
+  let i = 0;
+  document.getElementById('loadingStep').textContent = LOADING_STEPS[0];
+  loadInterval = setInterval(() => {
+    i = (i + 1) % LOADING_STEPS.length;
+    document.getElementById('loadingStep').textContent = LOADING_STEPS[i];
+  }, 2200);
+}
+function stopLoadingAnim() { clearInterval(loadInterval); }
+
+async function generate() {
+  const projects = getProjects();
+  const err = document.getElementById('error3');
+  if (projects.length === 0) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+
+  const nombre = document.getElementById('nombre').value.trim();
+  const formacion = document.getElementById('formacion').value;
+  const rol = document.getElementById('rol').value;
+  const frase = document.getElementById('frase').value.trim();
+  const techs = getSelectedChips();
+  const certs = document.getElementById('certs').value.trim();
+
+  const prompt = `Eres un experto en recursos humanos IT y personal branding para perfiles junior. 
+Tu tarea es generar contenido profesional real y persuasivo para ayudar a un recién graduado a conseguir su primer empleo IT.
+
+DATOS DEL CANDIDATO:
+- Nombre: ${nombre}
+- Formación: ${formacion}
+- Rol objetivo: ${rol}
+- Tecnologías: ${techs.join(', ')}
+${certs ? `- Certificaciones: ${certs}` : ''}
+${frase ? `- Sobre sí mismo: "${frase}"` : ''}
+- Proyectos: ${projects.map(p => `[${p.ctx}] "${p.name}" — Tecnologías: ${p.tech || 'no especificadas'} — Descripción: ${p.desc}${p.url ? ` — URL: ${p.url}` : ''}`).join(' | ')}
+
+Genera exactamente las siguientes 5 secciones. Usa JSON con esta estructura exacta y sin markdown:
+{
+  "headline": "...",
+  "sobre_mi": "...",
+  "proyectos": [{"nombre": "...", "descripcion_profesional": "..."}],
+  "carta": "...",
+  "keywords": "..."
+}
+
+INSTRUCCIONES POR SECCIÓN:
+1. headline: Titular de LinkedIn. Máx 220 caracteres. Incluye rol objetivo + tecnologías clave + algo que diferencie. Sin clichés como "apasionado" o "entusiasta". Directo y concreto.
+2. sobre_mi: Sección "Acerca de" de LinkedIn. 3-4 párrafos. Escrito en primera persona. Transforma la formación en valor real. Menciona proyectos concretos. Termina con una llamada a la acción concreta. Sin frases vacías.
+3. proyectos: Para cada proyecto del candidato, genera una descripción profesional de 3-5 líneas que suene a experiencia real, no a tarea escolar. Usa verbos de acción (desarrollé, implementé, diseñé, optimicé). Menciona el impacto o lo aprendido en términos concretos.
+4. carta: Carta de presentación adaptable. 3 párrafos: apertura que engancha, cuerpo con proyectos y tecnologías relevantes, cierre con propuesta de valor. Tono profesional pero humano. Máx 280 palabras. Sin "Me dirijo a ustedes" ni fórmulas anticuadas.
+5. keywords: Lista de 15-20 palabras clave optimizadas para ATS (sistemas de filtrado de CVs) separadas por coma, basadas en el perfil.
+
+IMPORTANTE: Devuelve SOLO el JSON. Sin texto adicional, sin backticks, sin markdown.`;
+
+  document.getElementById('loadingOverlay').classList.add('show');
+  startLoadingAnim();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content?.find(b => b.type === 'text')?.text || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    stopLoadingAnim();
+    document.getElementById('loadingOverlay').classList.remove('show');
+    renderResults(parsed, nombre, projects);
+    goStep(4);
+
+  } catch (e) {
+    stopLoadingAnim();
+    document.getElementById('loadingOverlay').classList.remove('show');
+    document.getElementById('error3').textContent = 'Error al conectar con la IA. Revisa tu conexión e inténtalo de nuevo.';
+    document.getElementById('error3').classList.add('show');
+  }
+}
+
+function renderResults(data, nombre, projects) {
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = '';
+
+  const blocks = [
+    {
+      label: 'Titular de LinkedIn',
+      platform: 'linkedin',
+      platformLabel: 'LinkedIn · Headline',
+      content: data.headline,
+      icon: '◈'
+    },
+    {
+      label: 'Sección "Sobre mí"',
+      platform: 'linkedin',
+      platformLabel: 'LinkedIn · About',
+      content: data.sobre_mi,
+      icon: '◉'
+    },
+    ...data.proyectos.map((p, i) => ({
+      label: `Proyecto: ${p.nombre || projects[i]?.name || `#${i+1}`}`,
+      platform: 'proyecto',
+      platformLabel: 'CV · Experiencia / Proyectos',
+      content: p.descripcion_profesional,
+      icon: '◐'
+    })),
+    {
+      label: 'Carta de presentación',
+      platform: 'carta',
+      platformLabel: 'Email / Portal de empleo',
+      content: data.carta,
+      icon: '◑'
+    },
+    {
+      label: 'Keywords para ATS',
+      platform: 'proyecto',
+      platformLabel: 'CV · Habilidades / ATS',
+      content: data.keywords,
+      icon: '◌'
+    }
+  ];
+
+  blocks.forEach((b, idx) => {
+    const el = document.createElement('div');
+    el.className = 'result-block';
+    el.innerHTML = `
+      <div class="result-header">
+        <div class="result-label">
+          <span>${b.icon}</span>
+          ${b.label}
+          <span class="result-platform platform-${b.platform}">${b.platformLabel}</span>
+        </div>
+        <button class="btn-copy" onclick="copyBlock(this, 'result-content-${idx}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copiar
+        </button>
+      </div>
+      <div class="result-content" id="result-content-${idx}">${b.content}</div>
+      <div class="char-count">${b.content.length} caracteres</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function copyBlock(btn, contentId) {
+  const text = document.getElementById(contentId)?.textContent || '';
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ copiado';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copiar`;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copyAll() {
+  const blocks = document.querySelectorAll('.result-content');
+  const labels = document.querySelectorAll('.result-label');
+  let text = '=== MI PERFIL IT PROFESIONAL ===\n\n';
+  blocks.forEach((b, i) => {
+    const label = labels[i]?.textContent?.trim().replace(/\s+/g,' ') || '';
+    text += `--- ${label} ---\n${b.textContent}\n\n`;
+  });
+  navigator.clipboard.writeText(text).then(() => alert('✅ Todo copiado al portapapeles'));
+}
+
+function restart() {
+  location.reload();
+}
+
+// Init: add first project
+addProject();
+</script>
+</body>
+</html>
