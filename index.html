@@ -920,18 +920,23 @@ IMPORTANTE: Devuelve SOLO el JSON. Sin texto adicional, sin backticks, sin markd
 
   try {
     const res = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AIzaSyDvPp6wgd6lzNy5-dmP4FENPLfB2btwQVE`,
+  'https://api.groq.com/openai/v1/chat/completions',
   {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer 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'
+    },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }]
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.7
     })
   }
 );
 
 const data = await res.json();
-const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+const raw = data.choices?.[0]?.message?.content || '';
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
 
