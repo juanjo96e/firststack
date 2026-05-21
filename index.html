@@ -809,10 +809,7 @@ function addProject() {
         <label>¿Qué hace y qué aprendiste?</label>
         <textarea id="proj-desc-${idx}" placeholder="Ej: Sistema web para gestionar el stock de una tienda. Aprendí a diseñar una API REST y a conectarla con base de datos." rows="3"></textarea>
       </div>
-      <div class="field-group">
-        <label>Enlace (GitHub, etc.) <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">opcional</span></label>
-        <input type="text" id="proj-url-${idx}" placeholder="https://github.com/..." />
-      </div>
+      
       <div class="field-group">
         <label>Contexto</label>
         <select id="proj-ctx-${idx}">
@@ -845,9 +842,8 @@ function getProjects() {
     const name = document.getElementById(`proj-name-${id}`)?.value.trim();
     const tech = document.getElementById(`proj-tech-${id}`)?.value.trim();
     const desc = document.getElementById(`proj-desc-${id}`)?.value.trim();
-    const url = document.getElementById(`proj-url-${id}`)?.value.trim();
     const ctx = document.getElementById(`proj-ctx-${id}`)?.value;
-    if (name || desc) projects.push({ name, tech, desc, url, ctx });
+    if (name || desc) projects.push({ name, tech, desc, ctx });
   });
   return projects;
 }
@@ -895,7 +891,7 @@ DATOS DEL CANDIDATO:
 - Tecnologías: ${techs.join(', ')}
 ${certs ? `- Certificaciones: ${certs}` : ''}
 ${frase ? `- Sobre sí mismo: "${frase}"` : ''}
-- Proyectos: ${projects.map(p => `[${p.ctx}] "${p.name}" — Tecnologías: ${p.tech || 'no especificadas'} — Descripción: ${p.desc}${p.url ? ` — URL: ${p.url}` : ''}`).join(' | ')}
+- Proyectos: ${projects.map(p => `[${p.ctx}] "${p.name}" — Tecnologías: ${p.tech || 'no especificadas'} — Descripción: ${p.desc}`).join(' | ')}
 
 Genera exactamente las siguientes 5 secciones. Usa JSON con esta estructura exacta y sin markdown:
 {
