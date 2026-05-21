@@ -920,19 +920,25 @@ IMPORTANTE: Devuelve SOLO el JSON. Sin texto adicional, sin backticks, sin markd
 
   try {
     const res = await fetch(
-  'https://groq-proxy-app-brhmbrc7awc9fta2.westeurope-01.azurewebsites.net/api/call_groq',
+  'https://api.groq.com/openai/v1/chat/completions',
   {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: prompt })
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer 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'
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 2048
+    })
   }
 );
 
 const data = await res.json();
-const raw = data.result || '';
+const raw = data.choices?.[0]?.message?.content || '';
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
-
     stopLoadingAnim();
     document.getElementById('loadingOverlay').classList.remove('show');
     renderResults(parsed, nombre, projects);
