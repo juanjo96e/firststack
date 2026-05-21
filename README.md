@@ -76,7 +76,7 @@ gsk_xxxxxxxxxxxxxxxxx
 
 ---
 
-## 3. Añadir tu API Key en el código
+## 3. Añadir tu API Key en el código (REVOCAR AL FINALIZAR)
 
 Abrir:
 
