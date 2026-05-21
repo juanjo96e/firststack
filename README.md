@@ -50,6 +50,12 @@ En una futura versión, la API será securizada utilizando:
 
 # 🔑 Cómo usar el proyecto
 
+## 🖥️ Ejecución local
+
+La aplicación puede ejecutarse localmente simplemente abriendo `index.html` en el navegador tras añadir una API key válida de Groq.
+
+No requiere backend, Node.js ni configuración adicional.
+
 ## 1. Clonar el repositorio
 
 ```bash
