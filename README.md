@@ -4,25 +4,52 @@ Ayuda a juniors sin experiencia laboral a crear perfiles profesionales de IT uti
 
 ---
 
-## 🚀 Demo Online
+## Demo Online
 
 https://delightful-island-05c932f10.7.azurestaticapps.net
 
 ---
 
-## ✨ Características
+## Características
 
-- 📝 Generador de perfiles IT con IA
-- 💼 Reescritura de proyectos como experiencia profesional
-- 🎯 Headlines optimizados para LinkedIn
-- 📄 Generación de cover letters
-- 🔑 Keywords ATS-friendly
-- ☁️ Desplegado en Azure Static Web Apps
-- 🔄 CI/CD automático con GitHub Actions
+- Generador de perfiles IT con IA
+- Reescritura de proyectos como experiencia profesional
+- Headlines optimizados para LinkedIn
+- Generación de cover letters
+- Keywords ATS-friendly
+- Desplegado en Azure Static Web Apps
+- CI/CD automático con GitHub Actions
 
 ---
 
-## 🛠️ Tech Stack
+Arquitectura & Decisiones de Diseño
+
+### Single File (index.html)
+
+Esta es una **versión MVP (Minimum Viable Product)** para demostración rápida. Todo el código (HTML, CSS, JavaScript) está en un único archivo porque:
+
+**Ventajas:**
+- Deployment súper simple (solo un archivo)
+- Sin dependencias externas
+- Fácil de clonar y usar
+- Perfecto para MVPs y prototipos rápidos
+
+**Trade-offs:**
+- No escalable para aplicaciones grandes
+- Difícil de mantener en proyectos complejos
+- Mezcla de concerns (no sigue separación de responsabilidades)
+
+### Evolución Planificada
+
+Para una versión de producción, separaría en:
+- `index.html` - Estructura
+- `styles.css` - Estilos
+- `app.js` - Lógica
+- Posible bundler (Webpack/Vite)
+
+---
+
+## Tech Stack
 
 - **Frontend:** HTML / CSS / JavaScript Vanilla
 - **AI API:** Groq API
@@ -48,7 +75,7 @@ En una futura versión, la API será securizada utilizando:
 
 ---
 
-# 🔑 Cómo usar el proyecto
+#  Cómo usar el proyecto
 
 ## 🖥️ Ejecución local
 
@@ -188,4 +215,4 @@ Infraestructura | Cloud | DevOps | AI Projects
 
 
 
-MIT
+MI
