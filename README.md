@@ -211,8 +211,3 @@ Este proyecto fue creado para:
 Juan José  
 Infraestructura | Cloud | DevOps | AI Projects
 
----
-
-
-
-MI
